@@ -1,0 +1,62 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  release:
+    types: [published]
+
+env:
+  DOTNET_VERSION_SHORT: "9.0"
+jobs:
+  build:
+    name: Build app
+    runs-on: windows-latest
+    permissions:
+      contents: write  # needed for uploading artifacts with softprops/action-gh-release@v2
+      
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        name: Setup .NET
+        with:
+            dotnet-version: ${{ env.DOTNET_VERSION_SHORT }}.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build app
+        run: dotnet build --no-restore
+      - name: Publish app
+        run: dotnet publish miro_utils/miro_utils.csproj /p:PublishProfile=miro_utils/Properties/PublishProfiles/FolderProfile.pubxml
+      - name: Upload app as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiroUtils_${{ github.ref_name }}
+          path: 'miro_utils\bin\Release\net${{ env.DOTNET_VERSION_SHORT }}\publish\win-x64\*'
+          if-no-files-found: error
+      - name: Zip published app
+        run: |
+            $zipPath = "${{ github.workspace }}\MiroUtils{{ github.ref_name }}.zip"    
+            powershell Compress-Archive -Path "miro_utils\bin\Release\net${{ env.DOTNET_VERSION_SHORT }}\publish\win-x64\*" -DestinationPath "$zipPath"
+            if (!(Test-Path $zipPath)) {
+              Write-Error "ZIP file was not created: $zipPath"
+              exit 1
+            }
+            $fileInfo = Get-Item $zipPath
+            if ($fileInfo.Length -lt 102400) {
+              Write-Error "ZIP file is smaller than 100KB: $($fileInfo.Length) bytes"
+              exit 1
+            }
+        shell: pwsh
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release' # Do it only for Release
+        with:
+          files: '${{ github.workspace }}/MiroUtils_${{ github.ref_name }}.zip'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
