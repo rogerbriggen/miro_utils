@@ -40,12 +40,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MiroUtils_${{ env.ref_sanitized }}
-          path: 'miro_utils\bin\Release\net${{ env.DOTNET_VERSION_SHORT }}\publish\win-x64\*'
+          path: 'miro_utils/bin/Release/net${{ env.DOTNET_VERSION_SHORT }}/publish/win-x64'
+          include-hidden-files: true
           if-no-files-found: error
       - name: Zip published app
         run: |
             $zipPath = "${{ github.workspace }}\MiroUtils_${{ env.ref_sanitized }}.zip"    
-            powershell Compress-Archive -Path "miro_utils\bin\Release\net${{ env.DOTNET_VERSION_SHORT }}\publish\win-x64\*" -DestinationPath "$zipPath"
+            powershell Compress-Archive -Path "miro_utils/bin/Release/net${{ env.DOTNET_VERSION_SHORT }}/publish/win-x64/*" -DestinationPath "$zipPath"
             if (!(Test-Path $zipPath)) {
               Write-Error "ZIP file was not created: $zipPath"
               exit 1
