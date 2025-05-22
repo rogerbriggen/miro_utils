@@ -41,6 +41,7 @@ jobs:
         with:
           name: MiroUtils_${{ env.ref_sanitized }}
           path: 'miro_utils/bin/Release/net${{ env.DOTNET_VERSION_SHORT }}/publish/win-x64'
+          include-hidden-files: true
           if-no-files-found: error
       - name: Zip published app
         run: |
