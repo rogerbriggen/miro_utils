@@ -25,17 +25,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
+    <Content Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
-
-  <!-- Deliver also the Readme.md if we publish -->
-  <ItemGroup>
-    <MySourceFiles Include="../README.md" />
-  </ItemGroup>
-  <Target Name="PublishExtraFiles" AfterTargets="Publish">
-    <Copy SourceFiles="@(MySourceFiles)" DestinationFolder="$(PublishDir)" />
-  </Target>
 
 </Project>
