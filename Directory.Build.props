@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<AppVersion>1.0.0.0</AppVersion>
+		<AppVersion>1.0.3.0</AppVersion>
 		<Version>$(AppVersion)</Version>
 		<AssemblyVersion>$(AppVersion)</AssemblyVersion>
 		<FileVersion>$(AppVersion)</FileVersion>
@@ -10,6 +10,9 @@
 		<Product>Miro Utils</Product>
 	</PropertyGroup>
 	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<WarningsAsErrors>True</WarningsAsErrors>
 	</PropertyGroup>
 		

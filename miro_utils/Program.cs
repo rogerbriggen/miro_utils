@@ -188,7 +188,7 @@ class Program
             {
                 h.AdditionalNewLineAfterOption = false;
                 h.Heading = "Miro Utils";
-                h.Copyright = "Copyright (c) 2025 Roger";
+                h.Copyright = "Copyright (c) 2025 Roger Briggen";
                 return h;
             }
         );
