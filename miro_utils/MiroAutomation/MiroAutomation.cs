@@ -21,6 +21,13 @@ internal class MiroAutomation
         var errorsDuringExport = false;
         var miroAutomationResult = new MiroAutomationResult(miroAutomationParams.BackupParams == null ? null : new MiroAutomationGenericResult(miroAutomationParams.BackupParams.Urls), miroAutomationParams.ChangePasswordParams == null ? null : new MiroAutomationGenericResult(miroAutomationParams.ChangePasswordParams.Urls));
 
+        // Do some sanity checks
+        if (miroAutomationParams == null || string.IsNullOrEmpty(miroAutomationParams.Username) || string.IsNullOrEmpty(miroAutomationParams.UserPassword) || miroAutomationParams.PlaywrightParams == null)
+        {
+            Log.Error("MiroAutomationParams is null!");
+            Environment.ExitCode = 1; // Error
+            return miroAutomationResult;
+        }
         try
         { 
             // Initialize Playwright
@@ -167,7 +174,7 @@ internal class MiroAutomation
                 miroAutomationGenericResult.UpdateBoardname(url, boardName);
 
                 // Ok, ready for the workflow
-                var changePasswordSucceeded = await ChangeBoardPasswordInternalAsync(page, boardName, miroAutomationParams.ChangePasswordParams.NewBoardPassword);
+                var changePasswordSucceeded = await ChangeBoardPasswordInternalAsync(page, boardName, miroAutomationParams.ChangePasswordParams.NewBoardPassword!);
                 if (changePasswordSucceeded)
                 {
                     // Update the success status in our results
