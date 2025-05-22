@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MiroUtils_${{ env.ref_sanitized }}
-          path: 'miro_utils/bin/Release/net${{ env.DOTNET_VERSION_SHORT }}/publish/win-x64/'
+          path: 'miro_utils/bin/Release/net${{ env.DOTNET_VERSION_SHORT }}/publish/win-x64/**/*'
           if-no-files-found: error
       - name: Zip published app
         run: |
