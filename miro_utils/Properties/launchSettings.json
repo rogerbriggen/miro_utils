@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "miro_utils": {
+      "commandName": "Project",
+      "commandLineArgs": "backup --userPassword XXXXXXX"
+    }
+  }
+}

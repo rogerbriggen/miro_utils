@@ -1,0 +1,230 @@
+﻿# top-most EditorConfig file
+root = true
+
+[*.csproj]
+indent_style = space
+indent_size = 2
+
+[*.cs]
+
+### ReSharper Begin
+### The disabled checks are covered by ReSharper and do not need to be checked twice.
+
+# IDE0041: Null check can be simplified
+dotnet_diagnostic.IDE0041.severity = none
+
+# IDE0083: Use pattern matching
+dotnet_diagnostic.IDE0083.severity = none
+
+# CA1806: Instance is never used
+dotnet_diagnostic.CA1806.severity = none
+
+# CA1822: Mark members as static
+dotnet_diagnostic.CA1822.severity = none
+
+### ReSharper End
+
+### Roslyn Begin
+### The following rules are disabled because they are not relevant for this project.
+
+# CA1826: Do not use Enumerable methods on indexable collections
+dotnet_diagnostic.CA1826.severity = none
+
+# S3458: Remove this empty 'case' clause
+dotnet_diagnostic.S3458.severity = none
+
+### Roslyn End
+
+# IDE0090: Use 'new(...)'
+csharp_style_implicit_object_creation_when_type_is_apparent = false
+
+[*.cs]
+#### Benennungsstile ####
+
+# Benennungsregeln
+
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
+
+dotnet_naming_rule.types_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
+dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
+
+# Symbolspezifikationen
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.interface.required_modifiers = 
+
+dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.types.required_modifiers = 
+
+dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
+dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.non_field_members.required_modifiers = 
+
+# Benennungsstile
+
+dotnet_naming_style.begins_with_i.required_prefix = I
+dotnet_naming_style.begins_with_i.required_suffix = 
+dotnet_naming_style.begins_with_i.word_separator = 
+dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+dotnet_naming_style.pascal_case.required_prefix = 
+dotnet_naming_style.pascal_case.required_suffix = 
+dotnet_naming_style.pascal_case.word_separator = 
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.pascal_case.required_prefix = 
+dotnet_naming_style.pascal_case.required_suffix = 
+dotnet_naming_style.pascal_case.word_separator = 
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+csharp_style_expression_bodied_methods = true:silent
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_operators = false:silent
+csharp_style_expression_bodied_properties = true:warning
+csharp_style_expression_bodied_indexers = true:warning
+csharp_style_expression_bodied_accessors = true:warning
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+csharp_space_around_binary_operators = before_and_after
+csharp_indent_labels = one_less_than_current
+csharp_using_directive_placement = outside_namespace:silent
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_braces = true:silent
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_prefer_primary_constructors = true:suggestion
+
+
+[*.vb]
+#### Benennungsstile ####
+
+# Benennungsregeln
+
+dotnet_naming_rule.interface_should_be_beginnt_mit_i.severity = suggestion
+dotnet_naming_rule.interface_should_be_beginnt_mit_i.symbols = interface
+dotnet_naming_rule.interface_should_be_beginnt_mit_i.style = beginnt_mit_i
+
+dotnet_naming_rule.typen_should_be_pascal_schreibweise.severity = suggestion
+dotnet_naming_rule.typen_should_be_pascal_schreibweise.symbols = typen
+dotnet_naming_rule.typen_should_be_pascal_schreibweise.style = pascal_schreibweise
+
+dotnet_naming_rule.nicht_feldmember_should_be_pascal_schreibweise.severity = suggestion
+dotnet_naming_rule.nicht_feldmember_should_be_pascal_schreibweise.symbols = nicht_feldmember
+dotnet_naming_rule.nicht_feldmember_should_be_pascal_schreibweise.style = pascal_schreibweise
+
+# Symbolspezifikationen
+
+dotnet_naming_symbols.interface.applicable_kinds = interface
+dotnet_naming_symbols.interface.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.interface.required_modifiers = 
+
+dotnet_naming_symbols.typen.applicable_kinds = class, struct, interface, enum
+dotnet_naming_symbols.typen.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.typen.required_modifiers = 
+
+dotnet_naming_symbols.nicht_feldmember.applicable_kinds = property, event, method
+dotnet_naming_symbols.nicht_feldmember.applicable_accessibilities = public, friend, private, protected, protected_friend, private_protected
+dotnet_naming_symbols.nicht_feldmember.required_modifiers = 
+
+# Benennungsstile
+
+dotnet_naming_style.beginnt_mit_i.required_prefix = I
+dotnet_naming_style.beginnt_mit_i.required_suffix = 
+dotnet_naming_style.beginnt_mit_i.word_separator = 
+dotnet_naming_style.beginnt_mit_i.capitalization = pascal_case
+
+dotnet_naming_style.pascal_schreibweise.required_prefix = 
+dotnet_naming_style.pascal_schreibweise.required_suffix = 
+dotnet_naming_style.pascal_schreibweise.word_separator = 
+dotnet_naming_style.pascal_schreibweise.capitalization = pascal_case
+
+dotnet_naming_style.pascal_schreibweise.required_prefix = 
+dotnet_naming_style.pascal_schreibweise.required_suffix = 
+dotnet_naming_style.pascal_schreibweise.word_separator = 
+dotnet_naming_style.pascal_schreibweise.capitalization = pascal_case
+
+[*.{cs,vb}]
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
+dotnet_style_prefer_auto_properties = true:silent
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_collection_initializer = false:silent
+dotnet_style_prefer_collection_expression = true:silent
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
+dotnet_style_prefer_conditional_expression_over_assignment = true:silent
+dotnet_style_prefer_conditional_expression_over_return = true:silent
+dotnet_style_explicit_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
+
+
+## dotnet 8 performance... check and activate one by one
+# CA1859: "RoslynAnalyzers Use concrete types when possible for improved performance" - disabled because we need the interfaces for testing
+dotnet_diagnostic.CA1859.severity = silent
+
+# CA1860 RoslynAnalyzers Avoid using 'Enumerable.Any()' extension method
+dotnet_diagnostic.CA1860.severity = silent
+## end dotnet 8 performance
+
+
+## dotnet 9 performance... check and activate one by one
+# CA2263 RoslynAnalyzers Prefer generic overload when type is known
+dotnet_diagnostic.CA2263.severity = error
+
+# XC0022 RoslynAnalyzers Binding could be compiled to improve runtime performance if x:DataType is specified. See https://learn.microsoft.com/dotnet/maui/fundamentals/data-binding/compiled-bindings for more information.
+dotnet_diagnostic.XC0022.severity = silent
+## end dotnet 9 performance
+
+tab_width = 4
+indent_size = 4
+indent_style = space
+end_of_line = crlf
+
+## SponsorLink stuff - https://github.com/devlooped/SponsorLink
+# DGI100: SponsorLink - Your are a sponsor, you rock
+dotnet_diagnostic.DGI100.severity = silent
+
+# DGI101: SponsorLink - Please install the SponsorLink Github App
+dotnet_diagnostic.DGI101.severity = silent
+
+# DTA100: SponsorLink - Your are a sponsor, you rock
+dotnet_diagnostic.DTA100.severity = silent
+
+# DTA101: SponsorLink - Please install the SponsorLink Github App
+dotnet_diagnostic.DTA101.severity = silent
+
+# TA100: SponsorLink - Please consider supporting ThisAssembly by sponsoring @devlooped ?? (https://github.com/devlooped#sponsorlink)
+dotnet_diagnostic.TA100.severity = silent
+## End SponsorLink stuff - https://github.com/devlooped/SponsorLink
+
+
+# CA1727: Use PascalCase for named placeholders
+dotnet_diagnostic.CA1727.severity = error
+
+# CA2254: Template should be a static expression
+dotnet_diagnostic.CA2254.severity = error
+
+# Serilog004: Constant Message Template Verifier
+dotnet_diagnostic.Serilog004.severity = error
+
+
+[*.{appxmanifest,axml,build,c,c++,cc,cginc,compute,config,cp,cpp,cppm,cu,cuh,cxx,dbml,discomap,dtd,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,hxx,inc,inl,ino,ipp,ixx,jsproj,lsproj,mpp,mq4,mq5,mqh,njsproj,nuspec,proj,props,resw,resx,StyleCop,targets,tasks,tpp,usf,ush,vbproj,xml,xsd}]
+indent_style = tab
+indent_size = 4
+tab_width = 4
+
+[*.{asax,ascx,aspx,axaml,cshtml,htm,html,master,paml,razor,skin,xaml,xamlx,xoml}]
+indent_style = space
+indent_size = 4
+tab_width = 4

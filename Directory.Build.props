@@ -1,0 +1,16 @@
+<Project>
+	<PropertyGroup>
+		<AppVersion>1.0.0.0</AppVersion>
+		<Version>$(AppVersion)</Version>
+		<AssemblyVersion>$(AppVersion)</AssemblyVersion>
+		<FileVersion>$(AppVersion)</FileVersion>
+		<Authors>Roger Briggen</Authors>
+		<Company>Roger Briggen</Company>
+		<Copyright>Copyright 2025 by Roger Briggen</Copyright>
+		<Product>Miro Utils</Product>
+	</PropertyGroup>
+	<PropertyGroup>
+		<WarningsAsErrors>True</WarningsAsErrors>
+	</PropertyGroup>
+		
+</Project>
