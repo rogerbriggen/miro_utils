@@ -1,0 +1,8 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"      # monitor .csproj / packages.config
+    directory: "/"                  # the repo root, or wherever your project lives
+    schedule:
+      interval: "weekly"            # or "daily", "monthly"
+    open-pull-requests-limit: 10    # max simultaneous PRs
+    # optional: target-branch, labels, reviewers, versioning-strategy, etc.
