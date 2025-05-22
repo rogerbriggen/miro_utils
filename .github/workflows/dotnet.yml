@@ -35,12 +35,12 @@ jobs:
       - name: Upload app as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MiroUtils_${{ github.ref_name }}
+          name: MiroUtils_${{ replace(github.ref_name, '/', '_') }}
           path: 'miro_utils\bin\Release\net${{ env.DOTNET_VERSION_SHORT }}\publish\win-x64\*'
           if-no-files-found: error
       - name: Zip published app
         run: |
-            $zipPath = "${{ github.workspace }}\MiroUtils{{ github.ref_name }}.zip"    
+            $zipPath = "${{ github.workspace }}\MiroUtils${{ replace(github.ref_name, '/', '_') }}.zip"    
             powershell Compress-Archive -Path "miro_utils\bin\Release\net${{ env.DOTNET_VERSION_SHORT }}\publish\win-x64\*" -DestinationPath "$zipPath"
             if (!(Test-Path $zipPath)) {
               Write-Error "ZIP file was not created: $zipPath"
@@ -56,7 +56,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.event_name == 'release' # Do it only for Release
         with:
-          files: '${{ github.workspace }}/MiroUtils_${{ github.ref_name }}.zip'
+          files: ${{ github.workspace }}/MiroUtils_${{ replace(github.ref_name, '/', '_') }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
