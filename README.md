@@ -68,3 +68,17 @@ Use all the names of the parameters in appsettings.json and join them with a col
 miro_utils backup --username my.email@formiro.com --MiroAutomationParams:UserPassword Password
 ```
   
+## Versions
+
+### 1.0.4
+
+- Update Playwright to 1.54.0
+- Update libraries to latest versions
+
+### 1.0.3
+
+- Update Playwright to 1.52.0
+
+### 1.0.0
+
+- Initial release
