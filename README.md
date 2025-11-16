@@ -70,6 +70,12 @@ miro_utils backup --username my.email@formiro.com --MiroAutomationParams:UserPas
   
 ## Versions
 
+### 1.0.6
+
+- Update to Dotnet 10
+- Update Playwright to 1.56.0
+- Update libraries to latest versions
+
 ### 1.0.5
 
 - Update Playwright to 1.55.0
