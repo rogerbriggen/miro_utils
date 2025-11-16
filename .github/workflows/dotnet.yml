@@ -12,7 +12,7 @@ on:
     types: [published]
 
 env:
-  DOTNET_VERSION_SHORT: "9.0"
+  DOTNET_VERSION_SHORT: "10.0"
 jobs:
   build:
     name: Build app
