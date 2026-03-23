@@ -6,3 +6,11 @@ updates:
       interval: "weekly"            # or "daily", "monthly"
     open-pull-requests-limit: 10    # max simultaneous PRs
     # optional: target-branch, labels, reviewers, versioning-strategy, etc.
+    groups:
+      microsoft-packages:           # group all Microsoft.* packages into one PR
+        patterns:
+          - "Microsoft.*"
+          - "System.*"
+      serilog-packages:             # group all Serilog packages into one PR
+        patterns:
+          - "Serilog*"
