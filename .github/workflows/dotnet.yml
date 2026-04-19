@@ -18,7 +18,7 @@ jobs:
     name: Build app
     runs-on: windows-latest
     permissions:
-      contents: write  # needed for uploading artifacts with softprops/action-gh-release@v2
+      contents: write  # needed for uploading artifacts with softprops/action-gh-release@v3
       
     steps:
       - uses: actions/checkout@v4
@@ -58,7 +58,7 @@ jobs:
             }
         shell: pwsh
       - name: Upload Release Assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: github.event_name == 'release' # Do it only for Release
         with:
           files: ${{ github.workspace }}/MiroUtils_${{ env.ref_sanitized }}.zip
