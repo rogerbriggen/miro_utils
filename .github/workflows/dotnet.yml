@@ -37,7 +37,7 @@ jobs:
         run: echo "ref_sanitized=${GITHUB_REF_NAME//\//_}" >> $GITHUB_ENV
         shell: bash
       - name: Upload app as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: MiroUtils_${{ env.ref_sanitized }}
           path: 'miro_utils/bin/Release/net${{ env.DOTNET_VERSION_SHORT }}/publish/win-x64'
