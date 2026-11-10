@@ -280,15 +280,25 @@ internal class MiroAutomation
 
         // Check if we have access rights, only owner can export a board
         // Export as backup
+        var backupButtonPressed = false;
         try
         {
             await DownloadAndSaveAsync(page, null,
                 async (IPage p) =>
-                    await WaitForButtonAndPressAsync(p, "[data-testid='board-settings__app_BOARD_EXPORT_BACKUP']", new ElementHandleWaitForElementStateOptions { Timeout = 2000 }));
+                {
+                    await WaitForButtonAndPressAsync(p, "[data-testid='board-settings__app_BOARD_EXPORT_BACKUP']", 2000);
+                    backupButtonPressed = true;
+                });
+        }
+        catch (TimeoutException e) when (!backupButtonPressed)
+        {
+            // The backup menu entry stays disabled if we are not the owner
+            Log.Error(e, "Backup of {Url} {BoardName} failed! Most probably you are not owner of the board!", page.Url, boardName);
+            return false;
         }
         catch (Exception e)
         {
-            Log.Error(e, "Backup of {Url} {BoardName} failed! Most probably you are not owner of the board!", page.Url, boardName);
+            Log.Error(e, "Backup of {Url} {BoardName} failed!", page.Url, boardName);
             return false;
         }
 
@@ -492,43 +502,35 @@ internal class MiroAutomation
     /// </summary>
     /// <param name="page">page to work with. No navigation will be done</param>
     /// <param name="selector">Selector to find the correct button</param>
-    /// <param name="waitEnabledOptions">You can overwrite the default wait options, mainly the timeout</param>
-    /// <exception cref="InvalidOperationException">Thrown if the button is not found on the page</exception>
-    public static async Task WaitForButtonAndPressAsync(IPage page, string selector, ElementHandleWaitForElementStateOptions? waitEnabledOptions = null)
+    /// <param name="enabledTimeoutMs">Optional timeout (ms) for the button to become enabled once it is visible.
+    /// If null, the Playwright default timeout is used.</param>
+    /// <exception cref="TimeoutException">Thrown if the button does not become visible or enabled in time</exception>
+    /// <remarks>
+    /// Uses a <see cref="ILocator"/> instead of an <see cref="IElementHandle"/>: a locator re-resolves the selector
+    /// on every action, so it survives Miro re-rendering the menu (which detaches the old DOM node and made
+    /// the previous ElementHandle based implementation fail with "Element is not attached to the DOM").
+    /// </remarks>
+    public static async Task WaitForButtonAndPressAsync(IPage page, string selector, float? enabledTimeoutMs = null)
     {
-        var button = await page.WaitForSelectorAsync(selector, new PageWaitForSelectorOptions
-        {
-            State = WaitForSelectorState.Visible
-        });
+        var button = page.Locator(selector);
 
-        if (button == null)
-        {
-            throw new InvalidOperationException($"Button is not ready. Page: {page.Url} - selector: {selector}");
-        }
-        await button.WaitForElementStateAsync(ElementState.Enabled, waitEnabledOptions);
+        // Wait until the button is shown (default timeout)
+        await button.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
 
-        await button.ClickAsync();
+        // Click waits until the button is visible, stable and enabled
+        await button.ClickAsync(new LocatorClickOptions { Timeout = enabledTimeoutMs });
     }
 
     /// <summary>
     /// Wait for a div to be visible and press it
     /// </summary>
     /// <param name="page">page to work with. No navigation will be done</param>
-    /// <param name="selector">Selector to find the correct button</param>
-    /// <param name="waitEnabledOptions">You can overwrite the default wait options, mainly the timeout</param>
-    /// <exception cref="InvalidOperationException">Thrown if the element is not found on the page</exception>
+    /// <param name="selector">Selector to find the correct element</param>
+    /// <exception cref="TimeoutException">Thrown if the element does not become visible in time</exception>
     public static async Task WaitForDivAndPressAsync(IPage page, string selector)
     {
-        var element = await page.WaitForSelectorAsync(selector, new PageWaitForSelectorOptions
-        {
-            State = WaitForSelectorState.Visible,            
-        });
-
-        if (element == null)
-        {
-            throw new InvalidOperationException($"Element is not ready. Page: {page.Url} - selector: {selector}");
-        }
-
+        var element = page.Locator(selector);
+        await element.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
         await element.ClickAsync();
     }
 
