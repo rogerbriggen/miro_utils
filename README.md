@@ -86,9 +86,9 @@ The `--userPassword` parameter is still required, but it is not used in that cas
   
 ## Versions
 
-### Unreleased
+### 1.0.8
 
-- Update Playwright to 1.59.0
+- Update Playwright to 1.64.1
 - Update libraries to latest versions
 - Make the board load timeout configurable (<https://github.com/rogerbriggen/miro_utils/pull/105>)
 - Fix flaky backup export (<https://github.com/rogerbriggen/miro_utils/pull/106>)

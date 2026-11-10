@@ -1,12 +1,12 @@
 <Project>
 	<PropertyGroup>
-		<AppVersion>1.0.6.0</AppVersion>
+		<AppVersion>1.0.8.0</AppVersion>
 		<Version>$(AppVersion)</Version>
 		<AssemblyVersion>$(AppVersion)</AssemblyVersion>
 		<FileVersion>$(AppVersion)</FileVersion>
 		<Authors>Roger Briggen</Authors>
 		<Company>Roger Briggen</Company>
-		<Copyright>Copyright 2025 by Roger Briggen</Copyright>
+		<Copyright>Copyright 2026 by Roger Briggen</Copyright>
 		<Product>Miro Utils</Product>
 	</PropertyGroup>
 	<PropertyGroup>
