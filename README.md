@@ -20,6 +20,7 @@ This tool uses Playwrigth to automate a browser so you can
 - Use appsettings.json or command line to configure Miro.com username
 - Use command line to configure Miro.com password
 - Use command line to configure the new miro board password
+- Use `PlaywrightParams:BoardLoadTimeoutSeconds` in appsettings.json to change how long to wait for a board to load (default: 60 seconds)
 
 
 ## Usage

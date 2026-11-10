@@ -44,11 +44,22 @@ internal class MiroAutomationPlaywrightParams
     public string Channel { get; set; } = "msedge";
     public bool Headless { get; set; } = true;
 
+    /// <summary>
+    /// How long to wait (in seconds) for a board to finish loading before giving up
+    /// </summary>
+    public int BoardLoadTimeoutSeconds { get; set; } = 60;
+
+    public TimeSpan BoardLoadTimeout => TimeSpan.FromSeconds(BoardLoadTimeoutSeconds);
+
     public void Validate()
     {
         if (string.IsNullOrWhiteSpace(Channel))
         {
             throw new ArgumentException("Channel cannot be null or empty.");
+        }
+        if (BoardLoadTimeoutSeconds <= 0)
+        {
+            throw new ArgumentException("BoardLoadTimeoutSeconds must be greater than 0.");
         }
     }
 }
