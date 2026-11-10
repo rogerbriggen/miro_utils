@@ -101,6 +101,7 @@ internal class MiroAutomation
         foreach (var url in miroAutomationParams.BackupParams.Urls)
         {
             var boardName = string.Empty;
+            var boardLoadTimeout = miroAutomationParams.PlaywrightParams!.BoardLoadTimeout;
             var page = await context.NewPageAsync();
             try
             {
@@ -110,7 +111,7 @@ internal class MiroAutomation
                 await page.GotoAsync(url);
 
                 // Wait for the page
-                boardName = await WaitForBoardReadyAsync(page);
+                boardName = await WaitForBoardReadyAsync(page, boardLoadTimeout);
 
                 // Update the boardname in our results
                 miroAutomationGenericResult.UpdateBoardname(url, boardName);
@@ -119,17 +120,17 @@ internal class MiroAutomation
                 // Export as PDF
                 if (miroAutomationParams.BackupParams.CreatePdf)
                 {
-                    await ExportBoardAsPdfAsync(page, boardName);
+                    await ExportBoardAsPdfAsync(page, boardName, boardLoadTimeout);
                 }
 
                 // Export as Image (pdf)
                 if (miroAutomationParams.BackupParams.CreateImagePdf)
                 {
-                    await ExportBoardAsImagePdfAsync(page, boardName);
+                    await ExportBoardAsImagePdfAsync(page, boardName, boardLoadTimeout);
                 }
 
                 // Export as Backup
-                var exportSucceeded = await ExportBoardAsBackup(page, boardName);
+                var exportSucceeded = await ExportBoardAsBackup(page, boardName, boardLoadTimeout);
                 if (exportSucceeded)
                 {
                     // Update the success status in our results
@@ -159,6 +160,7 @@ internal class MiroAutomation
         foreach (var url in miroAutomationParams.ChangePasswordParams.Urls)
         {
             var boardName = string.Empty;
+            var boardLoadTimeout = miroAutomationParams.PlaywrightParams!.BoardLoadTimeout;
             var page = await context.NewPageAsync();
             try
             {
@@ -168,7 +170,7 @@ internal class MiroAutomation
                 await page.GotoAsync(url);
 
                 // Wait for the page
-                boardName = await WaitForBoardReadyAsync(page);
+                boardName = await WaitForBoardReadyAsync(page, boardLoadTimeout);
 
                 // Update the boardname in our results
                 miroAutomationGenericResult.UpdateBoardname(url, boardName);
@@ -199,15 +201,18 @@ internal class MiroAutomation
     /// Wait for the board to be ready. This is done by waiting for the button in the upper right corner
     /// </summary>
     /// <param name="page">Page to work with. No navigation is done</param>
+    /// <param name="timeout">How long to wait for the board to be ready</param>
     /// <returns>Board name</returns>
-    public static async Task<string> WaitForBoardReadyAsync(IPage page)
+    public static async Task<string> WaitForBoardReadyAsync(IPage page, TimeSpan timeout)
     {
+        var timeoutMs = (float)timeout.TotalMilliseconds;
         var button = await page.WaitForSelectorAsync(BoardButtonOnTopRightSelector, new PageWaitForSelectorOptions
         {
-            State = WaitForSelectorState.Visible
+            State = WaitForSelectorState.Visible,
+            Timeout = timeoutMs
         });
 
-        await button!.WaitForElementStateAsync(ElementState.Enabled);
+        await button!.WaitForElementStateAsync(ElementState.Enabled, new ElementHandleWaitForElementStateOptions { Timeout = timeoutMs });
 
         //Check if we can fetch the name of the board
         var boardName = await button.InnerTextAsync();
@@ -220,7 +225,8 @@ internal class MiroAutomation
     /// </summary>
     /// <param name="page">Page to work with. No navigation is done</param>
     /// <param name="boardName">Board name for better diagnostics</param>
-    public static async Task ExportBoardAsPdfAsync(IPage page, string boardName)
+    /// <param name="boardLoadTimeout">How long to wait for the board to be ready again after the export</param>
+    public static async Task ExportBoardAsPdfAsync(IPage page, string boardName, TimeSpan boardLoadTimeout)
     {
         Log.Information("Exporting {BoardName} as PDF...", boardName);
         await ExportBoardAsync(page);
@@ -235,7 +241,7 @@ internal class MiroAutomation
                 await WaitForButtonAndPressAsync(p, "[data-testid='export-quality-settings-dialog__export-button']"));
 
         // Wait until export is done
-        await WaitForBoardReadyAsync(page);
+        await WaitForBoardReadyAsync(page, boardLoadTimeout);
 
         // The file has the same name as the board
         Log.Information("PDF export for {BoardName} finished", boardName);
@@ -246,7 +252,8 @@ internal class MiroAutomation
     /// </summary>
     /// <param name="page">Page to work with. No navigation is done</param>
     /// <param name="boardName">Board name for better diagnostics</param>
-    public static async Task ExportBoardAsImagePdfAsync(IPage page, string boardName)
+    /// <param name="boardLoadTimeout">How long to wait for the board to be ready again after the export</param>
+    public static async Task ExportBoardAsImagePdfAsync(IPage page, string boardName, TimeSpan boardLoadTimeout)
     {
         Log.Information("Exporting {BoardName} as Image...", boardName);
         await ExportBoardAsync(page);
@@ -261,7 +268,7 @@ internal class MiroAutomation
                 await WaitForButtonAndPressAsync(p, "[data-testid='export-quality-settings-dialog__export-button']"));
 
         // Wait until export is done
-        await WaitForBoardReadyAsync(page);
+        await WaitForBoardReadyAsync(page, boardLoadTimeout);
 
         // The file has the same name as the board
         Log.Information("Image (as pdf) export for {BoardName} finished", boardName);
@@ -273,7 +280,8 @@ internal class MiroAutomation
     /// </summary>
     /// <param name="page">Page to work with. No navigation is done</param>
     /// <param name="boardName">Board name for better diagnostics</param>
-    public static async Task<bool> ExportBoardAsBackup(IPage page, string boardName)
+    /// <param name="boardLoadTimeout">How long to wait for the board to be ready again after the export</param>
+    public static async Task<bool> ExportBoardAsBackup(IPage page, string boardName, TimeSpan boardLoadTimeout)
     {
         Log.Information("Exporting {BoardName} as backup...", boardName);
         await ExportBoardAsync(page);
@@ -293,7 +301,7 @@ internal class MiroAutomation
         }
 
         // Wait until export is done
-        await WaitForBoardReadyAsync(page);
+        await WaitForBoardReadyAsync(page, boardLoadTimeout);
 
         // The file has the same name as the board
         Log.Information("Backup export for {BoardName} finished", boardName);
