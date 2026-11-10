@@ -67,6 +67,21 @@ Use all the names of the parameters in appsettings.json and join them with a col
 ```bash
 miro_utils backup --username my.email@formiro.com --MiroAutomationParams:UserPassword Password
 ```
+
+#### Login without password (email with link or code)
+
+Miro does not offer the login with password for all accounts anymore. In that case the tool asks Miro to send an email
+and then waits until you finished the login. It never clicks a login link itself.
+
+1. If Miro asks for a captcha, solve it in the browser window of the tool and click the sign in button there again. This needs a visible browser: set `PlaywrightParams:Headless` to `false` in appsettings.json or add `--MiroAutomationParams:PlaywrightParams:Headless=false` to the command line.
+2. Open the email from Miro. **Do not click the link in the email**, it would log in your own browser and not in the browser of the tool.
+3. Finish the login in the browser window of the tool, either by
+   - entering the code from the email on the page and pressing the continue button, or
+   - pasting the link address from the email (right click on the link, copy link address) into the address bar.
+4. If the tool runs in a console window, you can also paste the link address into that console window and press Enter.
+5. As soon as you are logged in, the tool continues on its own. You have 10 minutes for this.
+
+The `--userPassword` parameter is still required, but it is not used in that case.
   
 ## Versions
 

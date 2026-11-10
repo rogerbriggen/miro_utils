@@ -76,7 +76,12 @@ class Program
             }
 
             // Parse command-line arguments
-            var result = new Parser(with => with.HelpWriter = null).ParseArguments<BackupOptions, ChangePasswordOptions>(args);
+            // Unknown arguments are ignored here, they can overwrite appsettings.json (e.g. --MiroAutomationParams:PlaywrightParams:Headless=false)
+            var result = new Parser(with =>
+            {
+                with.HelpWriter = null;
+                with.IgnoreUnknownArguments = true;
+            }).ParseArguments<BackupOptions, ChangePasswordOptions>(args);
 
             await result.MapResult(
                 async (BackupOptions opts) => await HandleBackupAsync(opts, configuration, automationParams),
