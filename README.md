@@ -86,9 +86,15 @@ The `--userPassword` parameter is still required, but it is not used in that cas
   
 ## Versions
 
+### Unreleased
+
+- Update Playwright to 1.59.0
+- Update libraries to latest versions
+- Make the board load timeout configurable (<https://github.com/rogerbriggen/miro_utils/pull/105>)
+- Fix flaky backup export (<https://github.com/rogerbriggen/miro_utils/pull/106>)
+
 ### 1.0.7
 
-- Update to Dotnet 10
 - Update Playwright to 1.59.0
 - Update libraries to latest versions
 
