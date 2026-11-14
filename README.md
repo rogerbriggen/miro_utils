@@ -11,7 +11,7 @@ This tool uses Playwrigth to automate a browser so you can
 
 ## Tools
 
-- Uses Dotnet 10
+- Uses .NET 11
 - Uses Playwright and MS Edge Browser
 
 ## Configure
