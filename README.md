@@ -93,6 +93,7 @@ The `--userPassword` parameter is still required, but it is not used in that cas
 - Update to .NET 11 (<https://github.com/rogerbriggen/miro_utils/pull/108>)
 - Update libraries to latest versions (<https://github.com/rogerbriggen/miro_utils/pull/107>)
 - Add a cooldown for package updates (Dependabot and NuGet minimum publish age) (<https://github.com/rogerbriggen/miro_utils/pull/108>)
+- Make the Playwright default timeout configurable and retry opening the export menu (<https://github.com/rogerbriggen/miro_utils/pull/109>)
 
 ### 1.0.8
 
