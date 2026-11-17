@@ -86,6 +86,12 @@ The `--userPassword` parameter is still required, but it is not used in that cas
   
 ## Versions
 
+### 1.0.9
+
+- Update to .NET 11 (<https://github.com/rogerbriggen/miro_utils/pull/108>)
+- Update libraries to latest versions (<https://github.com/rogerbriggen/miro_utils/pull/107>)
+- Add a cooldown for package updates (Dependabot and NuGet minimum publish age) (<https://github.com/rogerbriggen/miro_utils/pull/108>)
+
 ### 1.0.8
 
 - Update Playwright to 1.64.1
