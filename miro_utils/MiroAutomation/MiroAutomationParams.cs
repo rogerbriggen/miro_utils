@@ -51,6 +51,14 @@ internal class MiroAutomationPlaywrightParams
 
     public TimeSpan BoardLoadTimeout => TimeSpan.FromSeconds(BoardLoadTimeoutSeconds);
 
+    /// <summary>
+    /// Default timeout (in seconds) for all Playwright actions (clicks, waits for elements, ...)
+    /// that do not specify an explicit timeout. Playwright's own default is 30 seconds.
+    /// </summary>
+    public int DefaultTimeoutSeconds { get; set; } = 30;
+
+    public TimeSpan DefaultTimeout => TimeSpan.FromSeconds(DefaultTimeoutSeconds);
+
     public void Validate()
     {
         if (string.IsNullOrWhiteSpace(Channel))
@@ -60,6 +68,10 @@ internal class MiroAutomationPlaywrightParams
         if (BoardLoadTimeoutSeconds <= 0)
         {
             throw new ArgumentException("BoardLoadTimeoutSeconds must be greater than 0.");
+        }
+        if (DefaultTimeoutSeconds <= 0)
+        {
+            throw new ArgumentException("DefaultTimeoutSeconds must be greater than 0.");
         }
     }
 }
