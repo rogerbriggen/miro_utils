@@ -22,6 +22,7 @@ This tool uses Playwrigth to automate a browser so you can
 - Use command line to configure the new miro board password
 - Use `PlaywrightParams:BoardLoadTimeoutSeconds` in appsettings.json to change how long to wait for a board to load (default: 60 seconds)
 - Use `PlaywrightParams:DefaultTimeoutSeconds` in appsettings.json to change the default timeout for Playwright actions like clicking menu entries or waiting for elements (default: 30 seconds)
+- Use `PlaywrightParams:MenuClickTimeoutSeconds` in appsettings.json to change how long a single click may take while opening the export menu. If it is exceeded, the menu is closed and opened again, up to 3 attempts (default: 10 seconds)
 
 
 ## Usage

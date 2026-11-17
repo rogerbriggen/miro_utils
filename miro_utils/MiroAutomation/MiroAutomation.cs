@@ -104,6 +104,7 @@ internal class MiroAutomation
         {
             var boardName = string.Empty;
             var boardLoadTimeout = miroAutomationParams.PlaywrightParams!.BoardLoadTimeout;
+            var menuClickTimeout = miroAutomationParams.PlaywrightParams!.MenuClickTimeout;
             var page = await context.NewPageAsync();
             try
             {
@@ -122,17 +123,17 @@ internal class MiroAutomation
                 // Export as PDF
                 if (miroAutomationParams.BackupParams.CreatePdf)
                 {
-                    await ExportBoardAsPdfAsync(page, boardName, boardLoadTimeout);
+                    await ExportBoardAsPdfAsync(page, boardName, boardLoadTimeout, menuClickTimeout);
                 }
 
                 // Export as Image (pdf)
                 if (miroAutomationParams.BackupParams.CreateImagePdf)
                 {
-                    await ExportBoardAsImagePdfAsync(page, boardName, boardLoadTimeout);
+                    await ExportBoardAsImagePdfAsync(page, boardName, boardLoadTimeout, menuClickTimeout);
                 }
 
                 // Export as Backup
-                var exportSucceeded = await ExportBoardAsBackup(page, boardName, boardLoadTimeout);
+                var exportSucceeded = await ExportBoardAsBackup(page, boardName, boardLoadTimeout, menuClickTimeout);
                 if (exportSucceeded)
                 {
                     // Update the success status in our results
@@ -228,10 +229,11 @@ internal class MiroAutomation
     /// <param name="page">Page to work with. No navigation is done</param>
     /// <param name="boardName">Board name for better diagnostics</param>
     /// <param name="boardLoadTimeout">How long to wait for the board to be ready again after the export</param>
-    public static async Task ExportBoardAsPdfAsync(IPage page, string boardName, TimeSpan boardLoadTimeout)
+    /// <param name="menuClickTimeout">Timeout for a single click while opening the export menu</param>
+    public static async Task ExportBoardAsPdfAsync(IPage page, string boardName, TimeSpan boardLoadTimeout, TimeSpan menuClickTimeout)
     {
         Log.Information("Exporting {BoardName} as PDF...", boardName);
-        await ExportBoardAsync(page);
+        await ExportBoardAsync(page, menuClickTimeout);
 
         // Export as PDF
         await WaitForButtonAndPressAsync(page, "[data-testid='board-settings__app_BOARD_EXPORT_PDF']");
@@ -255,10 +257,11 @@ internal class MiroAutomation
     /// <param name="page">Page to work with. No navigation is done</param>
     /// <param name="boardName">Board name for better diagnostics</param>
     /// <param name="boardLoadTimeout">How long to wait for the board to be ready again after the export</param>
-    public static async Task ExportBoardAsImagePdfAsync(IPage page, string boardName, TimeSpan boardLoadTimeout)
+    /// <param name="menuClickTimeout">Timeout for a single click while opening the export menu</param>
+    public static async Task ExportBoardAsImagePdfAsync(IPage page, string boardName, TimeSpan boardLoadTimeout, TimeSpan menuClickTimeout)
     {
         Log.Information("Exporting {BoardName} as Image...", boardName);
-        await ExportBoardAsync(page);
+        await ExportBoardAsync(page, menuClickTimeout);
 
         // Export as Image
         await WaitForButtonAndPressAsync(page, "[data-testid='board-settings__app_BOARD_EXPORT_IMAGE']");
@@ -283,12 +286,13 @@ internal class MiroAutomation
     /// <param name="page">Page to work with. No navigation is done</param>
     /// <param name="boardName">Board name for better diagnostics</param>
     /// <param name="boardLoadTimeout">How long to wait for the board to be ready again after the export</param>
-    public static async Task<bool> ExportBoardAsBackup(IPage page, string boardName, TimeSpan boardLoadTimeout)
+    /// <param name="menuClickTimeout">Timeout for a single click while opening the export menu</param>
+    public static async Task<bool> ExportBoardAsBackup(IPage page, string boardName, TimeSpan boardLoadTimeout, TimeSpan menuClickTimeout)
     {
         Log.Information("Exporting {BoardName} as backup...", boardName);
         try
         {
-            await ExportBoardAsync(page);
+            await ExportBoardAsync(page, menuClickTimeout);
         }
         catch (Exception e)
         {
@@ -504,34 +508,31 @@ internal class MiroAutomation
     private const int ExportMenuMaxAttempts = 3;
 
     /// <summary>
-    /// Timeout (ms) for a single click on a menu entry while opening the export menu.
-    /// Kept short so that a menu which never becomes stable is closed and reopened instead of waiting for the full default timeout.
-    /// </summary>
-    private const float ExportMenuClickTimeoutMs = 10000;
-
-    /// <summary>
     /// Export the board. This is the first step for all exports
     /// </summary>
     /// <param name="page">page to work with. No navigation will be done</param>
+    /// <param name="menuClickTimeout">Timeout for a single click on a menu entry. Kept short so that a menu which
+    /// never becomes stable is closed and reopened instead of waiting for the full default timeout.</param>
     /// <exception cref="TimeoutException">Thrown if the export menu could not be opened after several attempts</exception>
     /// <remarks>
     /// Miro's (Radix) menus sometimes keep re-rendering or animating, so the "Export" sub menu entry is never
     /// "stable" or gets detached from the DOM. In that case we close the menu and start again from the beginning.
     /// </remarks>
-    public static async Task ExportBoardAsync(IPage page)
+    public static async Task ExportBoardAsync(IPage page, TimeSpan menuClickTimeout)
     {
+        var menuClickTimeoutMs = (float)menuClickTimeout.TotalMilliseconds;
         for (var attempt = 1; ; attempt++)
         {
             try
             {
                 // three dots in upper right corner after board name
-                await WaitForButtonAndPressAsync(page, "[data-testid='board-settings__toggle-icon']", ExportMenuClickTimeoutMs);
+                await WaitForButtonAndPressAsync(page, "[data-testid='board-settings__toggle-icon']", menuClickTimeoutMs);
 
                 // Board
-                await WaitForButtonAndPressAsync(page, "[data-testid='board-settings__item_board_menu']", ExportMenuClickTimeoutMs);
+                await WaitForButtonAndPressAsync(page, "[data-testid='board-settings__item_board_menu']", menuClickTimeoutMs);
 
                 // Export
-                await WaitForButtonAndPressAsync(page, "[data-testid='settings__export_subMenu']", ExportMenuClickTimeoutMs);
+                await WaitForButtonAndPressAsync(page, "[data-testid='settings__export_subMenu']", menuClickTimeoutMs);
                 return;
             }
             catch (TimeoutException e) when (attempt < ExportMenuMaxAttempts)

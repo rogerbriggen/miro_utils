@@ -59,6 +59,14 @@ internal class MiroAutomationPlaywrightParams
 
     public TimeSpan DefaultTimeout => TimeSpan.FromSeconds(DefaultTimeoutSeconds);
 
+    /// <summary>
+    /// Timeout (in seconds) for a single click on a menu entry while opening the export menu.
+    /// If it is exceeded, the menu is closed and opened again (up to 3 attempts).
+    /// </summary>
+    public int MenuClickTimeoutSeconds { get; set; } = 10;
+
+    public TimeSpan MenuClickTimeout => TimeSpan.FromSeconds(MenuClickTimeoutSeconds);
+
     public void Validate()
     {
         if (string.IsNullOrWhiteSpace(Channel))
@@ -72,6 +80,10 @@ internal class MiroAutomationPlaywrightParams
         if (DefaultTimeoutSeconds <= 0)
         {
             throw new ArgumentException("DefaultTimeoutSeconds must be greater than 0.");
+        }
+        if (MenuClickTimeoutSeconds <= 0)
+        {
+            throw new ArgumentException("MenuClickTimeoutSeconds must be greater than 0.");
         }
     }
 }
